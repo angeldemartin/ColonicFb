@@ -1,0 +1,95 @@
+---
+title: "ColonicFb"
+author: "A.DeMartin"
+date: "2024-12-16"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+## load file
+```{r load merged file}
+##load merged file 
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/ColonicFb/data/allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+```
+
+## set color vectors 
+```{r color vectors}
+## set vector for cond
+colcond <- c("#628395","#BF782D", "#B45B5C")
+names(colcond) <- c("untreated", "crod", "DSS")
+
+## set vector for dataset
+coldataset <- c("#628395","#BF782D","#B45B5C")
+names(coldataset) <- c("372561_14-14_20241203_Mu_colonicFb_untreated", "372561_15-15_20241203_Mu_colonicFb_cond1", "372561_16-16_20241209_Mu_colonicFb_cond2")
+
+colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
+names(colpal) <- c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "10", "13")
+
+colclusterName <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
+names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+```
+
+## rel cluster abundance
+```{r abundance cond, fig.height=8, fig.width=10}
+###dataset
+datList <- NULL
+for(con in unique(seuratM$cond)){
+  seuratSub <- subset(seuratM, cond==con)
+  print(dim(seuratSub))
+  dat_con <- as.data.frame(table(seuratSub$clusterName)) %>%
+  mutate(percent=Freq/ncol(seuratSub)) %>% mutate(cond=con)
+  datList[[con]] <- dat_con
+}
+dat_all <- do.call("rbind", datList)
+
+ordcond <- c("untreated", "crod", "DSS")
+
+## plot abundance
+ggbarplot(dat_all, x= "cond", y= "percent", fill = "Var1", palette = colclusterName, legend = "right", legend.titel = "cluster", ylab = "frequency")  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_x_discrete(limits=ordcond)
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

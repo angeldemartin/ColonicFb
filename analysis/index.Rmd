@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "ColonicFb InflMem"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -8,4 +8,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+### Merge_QC_UMAPS. 
+merge QC and display umaps
+[link](Merge_QC_UMAPS.html)
+
+### MarkerGenes. 
+Calculate and plot marker and DE genes
+[link](MarkerGenes.html)
+
+### RelAbundance. 
+Relative abundance
+[link](RelAbundance.html)

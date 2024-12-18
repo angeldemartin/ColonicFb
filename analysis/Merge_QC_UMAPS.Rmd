@@ -1,0 +1,232 @@
+---
+title: "ColonicFb"
+author: "A.DeMartin"
+date: "2024-12-16"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+##############################start pre-processing##############################
+
+## load files and merge
+```{r load files, eval=FALSE, include=TRUE}
+### load and merge all 
+basedir <- "/Users/immbio/Desktop/Project/Angelina/ColonicFb/data/colonicFb scdata/"
+fileNamList <- list.files(path = basedir)
+
+for(i in 1:length(fileNamList)){
+  seuratS <- readRDS(paste0(basedir, fileNamList[i]))
+  if(exists("seuratM")){
+    seuratM <- merge(x = seuratM, y = seuratS)
+  }else{
+    seuratM <- seuratS
+  }
+}
+
+remove(seuratS)
+table(seuratM$dataset)
+table(seuratM$orig.ident)
+
+#rerun seurat
+seuratM <- NormalizeData (object = seuratM)
+seuratM <- FindVariableFeatures(object = seuratM)
+seuratM <- ScaleData(object = seuratM, verbose = TRUE)
+seuratM <- JoinLayers(seuratM)
+seuratM <- RunPCA(object=seuratM, npcs = 30, verbose = FALSE)
+#seuratM <- RunTSNE(object=seuratM, reduction="pca", dims = 1:20)
+seuratM <- RunUMAP(object=seuratM, reduction="pca", dims = 1:20)
+seuratM <- FindNeighbors(object = seuratM, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratM <- FindClusters(object = seuratM, resolution = res[i], random.seed = 1234)
+}
+```
+
+```{r add metadata, eval=FALSE, include=TRUE}
+## cond
+untreated <- c("372561_14-14_20241203_Mu_colonicFb_untreated")
+crod <- c("372561_15-15_20241203_Mu_colonicFb_cond1")
+DSS <- c("372561_16-16_20241209_Mu_colonicFb_cond2")
+
+seuratM$cond <- "cond"
+seuratM$cond[which(seuratM$dataset %in% untreated)] <- "untreated"
+seuratM$cond[which(seuratM$dataset %in% crod)] <- "crod"
+seuratM$cond[which(seuratM$dataset %in% DSS)] <- "DSS"
+
+seuratM$cond <- factor(seuratM$cond, levels=c("untreated", "crod", "DSS"))
+Idents(seuratM) <- seuratM$cond
+
+table(seuratM$cond)
+
+#### cluster_name
+seuratM$clusterName <- "clusterName"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "0" )] <- "PdgfraloFb1"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "1" )] <- "Telocytes/Fibro2"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "2" )] <- "Trophocytes1"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "3" )] <- "PdgfraloFb2"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "4" )] <- "Myocytes"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "5" )] <- "PdgfrahiFb"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "6" )] <- "Trophocytes2"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "7" )] <- "Glial"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "8" )] <- "ICC1"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "9" )] <- "Immun1"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "10" )] <- "EpC"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "11" )] <- "ICC2"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "12" )] <- "Immun2"
+seuratM$clusterName[which(seuratM$RNA_snn_res.0.25 %in% "13" )] <- "Cycling"
+table(seuratM$clusterName)
+
+###order
+seuratM$clusterName <- factor(seuratM$clusterName, levels=c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling"))
+Idents(seuratM) <- seuratM$clusterName
+table(seuratM$clusterName)
+
+###order
+seuratM$RNA_snn_res.0.25 <- factor(seuratM$RNA_snn_res.0.25, levels=c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "10", "13"))
+Idents(seuratM) <- seuratM$RNA_snn_res.0.25
+table(seuratM$RNA_snn_res.0.25)
+
+## combine cluterName and cond
+seuratM$clusterName_cond <- paste0(seuratM$clusterName, '_', seuratM$cond)
+seuratM$clusterName_cond <- factor(seuratM$clusterName_cond, levels=c("PdgfraloFb1_untreated","PdgfraloFb1_crod","PdgfraloFb1_DSS","PdgfraloFb2_untreated","PdgfraloFb2_crod","PdgfraloFb2_DSS","Trophocytes1_untreated","Trophocytes1_crod","Trophocytes1_DSS","Trophocytes2_untreated","Trophocytes2_crod","Trophocytes2_DSS","Telocytes/Fibro2_untreated","Telocytes/Fibro2_crod","Telocytes/Fibro2_DSS","PdgfrahiFb_untreated","PdgfrahiFb_crod","PdgfrahiFb_DSS","Myocytes_untreated","Myocytes_crod","Myocytes_DSS","Glial_untreated","Glial_crod","Glial_DSS","ICC1_untreated","ICC1_crod","ICC1_DSS", "ICC2_untreated","ICC2_crod","ICC2_DSS","Immun1_untreated","Immun1_crod","Immun1_DSS","Immun2_untreated","Immun2_crod","Immun2_DSS","EpC_untreated","EpC_crod","EpC_DSS","Cycling_untreated","Cycling_crod", "Cycling_DSS"))
+table(seuratM$clusterName_cond)
+```
+
+```{r save merged seurat object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratM, file="/Users/immbio/Desktop/Project/Angelina/ColonicFb/data/allmerged_seurat.rds")
+```
+
+##############################end pre-processing##############################
+
+## load file
+```{r load merged file}
+##load merged file 
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/ColonicFb/data/allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+
+table(seuratM$RNA_snn_res.0.25)
+table(seuratM$orig.ident)
+table(seuratM$cond)
+```
+
+## set color vectors 
+```{r color vectors}
+
+## set vector for cond
+colcond <- c("#628395","#BF782D", "#B45B5C")
+names(colcond) <- c("untreated", "crod", "DSS")
+
+## set vector for dataset
+coldataset <- c("#628395","#BF782D","#B45B5C")
+names(coldataset) <- c("372561_14-14_20241203_Mu_colonicFb_untreated", "372561_15-15_20241203_Mu_colonicFb_cond1", "372561_16-16_20241209_Mu_colonicFb_cond2")
+
+colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
+names(colpal) <- c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "10", "13")
+
+colclusterName <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
+names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+
+
+#c("#67001f", "#D53E4F", "#f4a582", "#FEE08B", "#003c30","#01665e","#66C2A5", "#3288BD","#BEAED4", "#c7eae5","#355C7D","#202547","#B45B5C","#8c510a")
+#c("#dfc27d","#BE3144","#202547","#355C7D","#779d8d")
+#c("#202547","#BE3144")
+```
+
+## QC merged 
+```{r QC datasets}
+# Extract meta.data from the Seurat object
+meta.data <- seuratM@meta.data
+# Create the density plot
+ptotaldataset <- ggplot(data = meta.data, aes(x = total, color = dataset, fill = dataset)) +
+  geom_density(alpha = 0.2) +
+  scale_fill_manual(values = coldataset) +
+  scale_color_manual(values = coldataset) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100)
+
+pdetecteddataset <- ggplot(data = meta.data, aes(x = detected, color = dataset, fill = dataset)) +
+  geom_density(alpha = 0.2) +
+  scale_fill_manual(values = coldataset) +
+  scale_color_manual(values = coldataset) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100)
+
+# Return the plots as a list
+list(ptotaldataset, pdetecteddataset)
+```
+
+## plot umaps all
+```{r umap all}
+Idents(seuratM) <- seuratM$cond
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colcond) 
+
+Idents(seuratM) <- seuratM$RNA_snn_res.0.25
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal) 
+
+Idents(seuratM) <- seuratM$clusterName
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)  + theme(legend.position = "none")
+```
+
+## plot umaps split
+```{r umap split, fig.width=24, fig.height=6}
+Idents(seuratM) <- seuratM$cond
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colcond, split.by = "cond") 
+
+Idents(seuratM) <- seuratM$RNA_snn_res.0.25
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal, split.by = "cond") 
+
+Idents(seuratM) <- seuratM$clusterName
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName, split.by = "cond") 
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```
