@@ -239,14 +239,26 @@ colVec <- colclusterName
 avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
 ```
 
-## dotplot marker
-```{r dotplot marker, fig.height=4, fig.width=9}
+## dotplot marker cluster
+```{r dotplot marker cluster, fig.height=4, fig.width=9}
 genes <- data.frame(gene=rownames(seuratM)) %>% 
   mutate(geneID=gsub("^.*\\.", "", gene))
 
 selGenes <- data.frame(geneID=c("Mki67","Epcam","Ptprc","Ano1","Plp1","Acta2","Bmp5","Adamdec1","Pdgfra","Pi16","Cd81","Cd34","Pdpn")) %>% left_join(., genes, by="geneID")
 
 DotPlot(seuratM, features = selGenes, group.by= "clusterName") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+```
+
+## dotplot marker cluster+cond
+```{r dotplot marker cluster plus cond, fig.height=5, fig.width=14}
+Idents(seuratM) <- seuratM$clusterName_cond
+
+genes <- data.frame(gene=rownames(seuratM)) %>% 
+  mutate(geneID=gsub("^.*\\.", "", gene))
+
+selGenes <- data.frame(geneID=c("Mki67","Epcam","Ptprc","Ano1","Plp1","Acta2","Bmp5","Adamdec1","Pdgfra","Pi16","Cd81","Cd34","Pdpn")) %>% left_join(., genes, by="geneID")
+
+DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
 
 ## feature plots fb maker genes
@@ -335,6 +347,94 @@ egoDSS <- setReadable(egoDSS, OrgDb = org.Mm.eg.db)
 dotplot(egoDSS, showCategory=30)
 ```
 
+## cluster top 100 DE genes
+```{r cluster top 100 DE genes}
+Idents(seuratM) <- seuratM$cond
+#top DE genes PdgfraloFb1
+seuratPdgfraloFb1 <- subset(seuratM, clusterName == "PdgfraloFb1")
+table(seuratPdgfraloFb1$clusterName)
+levels(seuratPdgfraloFb1)
+
+DEGenesPdgfraloFb1 <- FindAllMarkers(seuratPdgfraloFb1,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "PdgfraloFb1")
+DEGenesPdgfraloFb1top <- DEGenesPdgfraloFb1 %>% top_n (200, avg_log2FC)
+
+#top DE genes PdgfraloFb2
+seuratPdgfraloFb2 <- subset(seuratM, clusterName == "PdgfraloFb2")
+table(seuratPdgfraloFb2$clusterName)
+levels(seuratPdgfraloFb2)
+
+DEGenesPdgfraloFb2 <- FindAllMarkers(seuratPdgfraloFb2,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "PdgfraloFb2")
+DEGenesPdgfraloFb2top <- DEGenesPdgfraloFb2 %>% top_n (200, avg_log2FC)
+
+#top DE genes Trophocytes1
+seuratTrophocytes1 <- subset(seuratM, clusterName == "Trophocytes1")
+table(seuratTrophocytes1$clusterName)
+levels(seuratTrophocytes1)
+
+DEGenesTrophocytes1 <- FindAllMarkers(seuratTrophocytes1,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "Trophocytes1")
+DEGenesTrophocytes1top <- DEGenesTrophocytes1 %>% top_n (200, avg_log2FC)
+
+#top DE genes Trophocytes2
+seuratTrophocytes2 <- subset(seuratM, clusterName == "Trophocytes2")
+table(seuratTrophocytes2$clusterName)
+levels(seuratTrophocytes2)
+
+DEGenesTrophocytes2 <- FindAllMarkers(seuratTrophocytes2,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "Trophocytes2")
+DEGenesTrophocytes2top <- DEGenesTrophocytes2 %>% top_n (200, avg_log2FC)
+
+DEGenesAll <- full_join(DEGenesPdgfraloFb1top, DEGenesPdgfraloFb2top)
+DEGenesAll <- full_join(DEGenesAll, DEGenesTrophocytes1top)
+DEGenesAll <- full_join(DEGenesAll, DEGenesTrophocytes2top)
+
+#top DE genes Telocytes/Fibro2
+seuratTelocytes <- subset(seuratM, clusterName == "Telocytes/Fibro2")
+table(seuratTelocytes$clusterName)
+levels(seuratTelocytes)
+
+DEGenesTelocytes <- FindAllMarkers(seuratTelocytes,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "Telocytes/Fibro2")
+DEGenesTelocytestop <- DEGenesTelocytes %>% top_n (200, avg_log2FC)
+
+#top DE genes PdgfrahiFb
+seuratPdgfrahiFb <- subset(seuratM, clusterName == "PdgfrahiFb")
+table(seuratPdgfrahiFb$clusterName)
+levels(seuratPdgfrahiFb)
+
+DEGenesPdgfrahiFb <- FindAllMarkers(seuratPdgfrahiFb,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "PdgfrahiFb")
+DEGenesPdgfrahiFbtop <- DEGenesPdgfrahiFb %>% top_n (200, avg_log2FC)
+
+#top DE genes Myocytes
+seuratMyocytes <- subset(seuratM, clusterName == "Myocytes")
+table(seuratMyocytes$clusterName)
+levels(seuratMyocytes)
+
+DEGenesMyocytes <- FindAllMarkers(seuratMyocytes,only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) %>% mutate(celltype = "Myocytes")
+DEGenesMyocytestop <- DEGenesMyocytes %>% top_n (200, avg_log2FC)
+
+DEGenesAll <- full_join(DEGenesPdgfraloFb1top, DEGenesPdgfraloFb2top)
+DEGenesAll <- full_join(DEGenesAll, DEGenesTrophocytes1top)
+DEGenesAll <- full_join(DEGenesAll, DEGenesTrophocytes2top)
+DEGenesAll <- full_join(DEGenesAll, DEGenesTelocytestop)
+DEGenesAll <- full_join(DEGenesAll, DEGenesPdgfrahiFbtop)
+DEGenesAll <- full_join(DEGenesAll, DEGenesMyocytestop)
+```
+
+## distribution of log2FC of top 200 cw DE genes
+```{r top 100 DE genes, fig.width=8, fig.height=4}
+ggdensity(DEGenesAll, x = "avg_log2FC", add= "median", rug = TRUE, color = "celltype", fill = "celltype", palette = colclusterName)
+
+ggviolin(DEGenesAll, x = "celltype", y = "avg_log2FC", fill = "celltype", palette = colclusterName, add = "median_iqr")
+
+ggboxplot(DEGenesAll, x = "celltype", y = "avg_log2FC", color = "celltype", palette = colclusterName ,add = "jitter")
+```
+
+
 ## dotplot RIG-I signaling pathway genes
 ```{r dotplot RIG-I, fig.height=4, fig.width=12}
 Idents(seuratM) <- seuratM$clusterName_cond
@@ -344,6 +444,24 @@ genes <- data.frame(gene=rownames(seuratM)) %>%
 
 selGenes <- data.frame(geneID=c("Ankrd17","Zc3hav1","Ddx60","Rigi","Pum2","Pum1","Nploc4","Usp15","Lsm14a","Nlrx1","Oasl1")) %>% left_join(., genes, by="geneID")
 
+DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+```
+
+## dotplot activation of innate immune response
+```{r dotplot innate immune response, fig.height=22, fig.width=12}
+Idents(seuratM) <- seuratM$clusterName_cond
+
+genes <- data.frame(gene=rownames(seuratM)) %>% 
+  mutate(geneID=gsub("^.*\\.", "", gene))
+
+egoDSS <- dplyr::filter(egoDSS@result, egoDSS@result$Description =="activation of innate immune response")
+g1 <- egoDSS$geneID
+Str <- (g1)
+strSub <- strsplit(Str, "/")
+df <- as.data.frame(strSub)
+colnames(df) <- c ("geneID")
+
+selGenes <- data.frame(geneID=df$geneID) %>% left_join(., genes, by="geneID")
 DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
 

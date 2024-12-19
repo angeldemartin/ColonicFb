@@ -382,7 +382,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-12-18
+<strong>Last updated:</strong> 2024-12-19
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -420,10 +420,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -550,15 +550,15 @@ data/allmerged_seurat.rds
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinColonicFbtree6a53a061667308d71d090559bae55c61c284aa35targetblank6a53a06a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinColonicFbtreeaf39455842ccf9a71a4fe05b21eee7e5e7d6d40atargetblankaf39455a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/angeldemartin/ColonicFb/tree/6a53a061667308d71d090559bae55c61c284aa35" target="_blank">6a53a06</a>
+<a href="https://github.com/angeldemartin/ColonicFb/tree/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a" target="_blank">af39455</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinColonicFbtree6a53a061667308d71d090559bae55c61c284aa35targetblank6a53a06a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinColonicFbtreeaf39455842ccf9a71a4fe05b21eee7e5e7d6d40atargetblankaf39455a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -568,7 +568,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/angeldemartin/ColonicFb/tree/6a53a061667308d71d090559bae55c61c284aa35" target="_blank">6a53a06</a>.
+<a href="https://github.com/angeldemartin/ColonicFb/tree/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a" target="_blank">af39455</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -585,18 +585,10 @@ were generated:
 Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    data/colonicFb scdata/
 
-Untracked files:
-    Untracked:  analysis/DEGenes_cond
-    Untracked:  analysis/MarkerGenes.Rmd
-    Untracked:  analysis/Merge_QC_UMAPS.Rmd
-    Untracked:  analysis/RelAbundance.Rmd
-    Untracked:  analysis/markerGenes_res0.25
-
 Unstaged changes:
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/Merge_QC_UMAPS.Rmd
 
 </code></pre>
 <p>
@@ -612,9 +604,72 @@ have uncommitted changes.
 </div>
 <div id="versions" class="tab-pane fade">
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/Merge_QC_UMAPS.Rmd</code>) and
+HTML (<code>docs/Merge_QC_UMAPS.html</code>) files. If you’ve configured
+a remote Git repository (see <code>?wflow_git_remote</code>), click on
+the hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/analysis/Merge_QC_UMAPS.Rmd" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+<td>
+Dez24
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/angeldemartin/ColonicFb/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/Merge_QC_UMAPS.html" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+<td>
+Dez24
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -698,7 +753,12 @@ table(seuratM$clusterName)
 ###order
 seuratM$RNA_snn_res.0.25 &lt;- factor(seuratM$RNA_snn_res.0.25, levels=c(&quot;0&quot;,&quot;3&quot;,&quot;2&quot;, &quot;6&quot;, &quot;1&quot;, &quot;5&quot;, &quot;4&quot;, &quot;7&quot;,&quot;8&quot;, &quot;11&quot;, &quot;9&quot;, &quot;12&quot;, &quot;10&quot;, &quot;13&quot;))
 Idents(seuratM) &lt;- seuratM$RNA_snn_res.0.25
-table(seuratM$RNA_snn_res.0.25)</code></pre>
+table(seuratM$RNA_snn_res.0.25)
+
+## combine cluterName and cond
+seuratM$clusterName_cond &lt;- paste0(seuratM$clusterName, &#39;_&#39;, seuratM$cond)
+seuratM$clusterName_cond &lt;- factor(seuratM$clusterName_cond, levels=c(&quot;PdgfraloFb1_untreated&quot;,&quot;PdgfraloFb1_crod&quot;,&quot;PdgfraloFb1_DSS&quot;,&quot;PdgfraloFb2_untreated&quot;,&quot;PdgfraloFb2_crod&quot;,&quot;PdgfraloFb2_DSS&quot;,&quot;Trophocytes1_untreated&quot;,&quot;Trophocytes1_crod&quot;,&quot;Trophocytes1_DSS&quot;,&quot;Trophocytes2_untreated&quot;,&quot;Trophocytes2_crod&quot;,&quot;Trophocytes2_DSS&quot;,&quot;Telocytes/Fibro2_untreated&quot;,&quot;Telocytes/Fibro2_crod&quot;,&quot;Telocytes/Fibro2_DSS&quot;,&quot;PdgfrahiFb_untreated&quot;,&quot;PdgfrahiFb_crod&quot;,&quot;PdgfrahiFb_DSS&quot;,&quot;Myocytes_untreated&quot;,&quot;Myocytes_crod&quot;,&quot;Myocytes_DSS&quot;,&quot;Glial_untreated&quot;,&quot;Glial_crod&quot;,&quot;Glial_DSS&quot;,&quot;ICC1_untreated&quot;,&quot;ICC1_crod&quot;,&quot;ICC1_DSS&quot;, &quot;ICC2_untreated&quot;,&quot;ICC2_crod&quot;,&quot;ICC2_DSS&quot;,&quot;Immun1_untreated&quot;,&quot;Immun1_crod&quot;,&quot;Immun1_DSS&quot;,&quot;Immun2_untreated&quot;,&quot;Immun2_crod&quot;,&quot;Immun2_DSS&quot;,&quot;EpC_untreated&quot;,&quot;EpC_crod&quot;,&quot;EpC_DSS&quot;,&quot;Cycling_untreated&quot;,&quot;Cycling_crod&quot;, &quot;Cycling_DSS&quot;))
+table(seuratM$clusterName_cond)</code></pre>
 <pre class="r"><code>### save seurat object
 saveRDS(seuratM, file=&quot;/Users/immbio/Desktop/Project/Angelina/ColonicFb/data/allmerged_seurat.rds&quot;)</code></pre>
 <p>##############################end
@@ -771,40 +831,382 @@ pdetecteddataset &lt;- ggplot(data = meta.data, aes(x = detected, color = datase
 list(ptotaldataset, pdetecteddataset)</code></pre>
 <pre><code>[[1]]</code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/QC%20datasets-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-QC-datasets-1">
+Past versions of "QC datasets-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-QC-datasets-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/QC datasets-1.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>
 [[2]]</code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/QC%20datasets-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-QC-datasets-2">
+Past versions of "QC datasets-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-QC-datasets-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/QC datasets-2.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="plot-umaps-all" class="section level2">
 <h2>plot umaps all</h2>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$cond
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colcond) </code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-all-1">
+Past versions of "umap all-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-all-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap all-1.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.05, cols = colcond) + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-all-2">
+Past versions of "umap all-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-all-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap all-2.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$RNA_snn_res.0.25
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colpal) </code></pre>
-<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-all-3">
+Past versions of "umap all-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-all-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap all-3.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$clusterName
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colclusterName)</code></pre>
-<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-3.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colclusterName)  + theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-all-4">
+Past versions of "umap all-4.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-all-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap all-4.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colclusterName)  + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20all-5.png" width="672" style="display: block; margin: auto;" />
+## plot umaps A4</p>
+<pre class="r"><code>Idents(seuratM) &lt;- seuratM$cond
+DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 1.5, cols = colcond) + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20A4-1.png" width="2851.2" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>Idents(seuratM) &lt;- seuratM$clusterName
+DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 1.5, cols = colclusterName)  + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20A4-2.png" width="2851.2" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-umaps-split" class="section level2">
 <h2>plot umaps split</h2>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$cond
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colcond, split.by = &quot;cond&quot;) </code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20split-1.png" width="2304" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-split-1">
+Past versions of "umap split-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-split-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap split-1.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$RNA_snn_res.0.25
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colpal, split.by = &quot;cond&quot;) </code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20split-2.png" width="2304" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-split-2">
+Past versions of "umap split-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-split-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap split-2.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>Idents(seuratM) &lt;- seuratM$clusterName
 DimPlot(seuratM, reduction = &quot;umap&quot;, pt.size = 0.1, cols = colclusterName, split.by = &quot;cond&quot;) </code></pre>
 <p><img src="figure/Merge_QC_UMAPS.Rmd/umap%20split-3.png" width="2304" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-split-3">
+Past versions of "umap split-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-split-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/ColonicFb/blob/af39455842ccf9a71a4fe05b21eee7e5e7d6d40a/docs/figure/Merge_QC_UMAPS.Rmd/umap split-3.png" target="_blank">af39455</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2024-12-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="session-info" class="section level2">
 <h2>session info</h2>
 <pre class="r"><code>date()</code></pre>
-<pre><code>[1] &quot;Wed Dec 18 15:11:20 2024&quot;</code></pre>
+<pre><code>[1] &quot;Thu Dec 19 09:28:24 2024&quot;</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.4.0 (2024-04-24)
 Platform: x86_64-apple-darwin20
@@ -847,8 +1249,8 @@ loaded via a namespace (and not attached):
   [7] bit_4.5.0                 doParallel_1.0.17         clue_0.3-65              
  [10] lattice_0.22-6            rjson_0.2.23              blob_1.2.4               
  [13] S4Arrays_1.4.1            pbkrtest_0.5.3            parallel_4.4.0           
- [16] png_0.1-8                 plotrix_3.8-4             cli_3.6.3                
- [19] ggplotify_0.1.2           goftest_1.2-3             VIM_6.2.2                
+ [16] png_0.1-8                 plotrix_3.8-4             ggplotify_0.1.2          
+ [19] cli_3.6.3                 goftest_1.2-3             VIM_6.2.2                
  [22] variancePartition_1.34.0  BiocNeighbors_1.22.0      shadowtext_0.1.4         
  [25] uwot_0.2.2                curl_5.2.3                tidytree_0.4.6           
  [28] mime_0.12                 evaluate_1.0.1            leiden_0.4.3.1           
@@ -898,35 +1300,36 @@ loaded via a namespace (and not attached):
 [160] rmarkdown_2.28            scales_1.3.0              R.methodsS3_1.8.2        
 [163] future_1.34.0             RANN_2.6.2                Cairo_1.6-2              
 [166] spatstat.data_3.1-2       rstudioapi_0.17.1         cluster_2.1.6            
-[169] mutoss_0.1-13             spatstat.utils_3.1-0      hms_1.1.3                
-[172] fitdistrplus_1.2-1        munsell_0.5.1             cowplot_1.1.3            
-[175] colorspace_2.1-1          rlang_1.1.4               DelayedMatrixStats_1.26.0
-[178] sparseMatrixStats_1.16.0  xts_0.14.1                dotCall64_1.2            
-[181] shinydashboard_0.7.2      ggforce_0.4.2             laeken_0.5.3             
-[184] mgcv_1.9-1                xfun_0.48                 e1071_1.7-16             
-[187] TH.data_1.1-2             iterators_1.0.14          abind_1.4-8              
-[190] GOSemSim_2.30.2           treeio_1.28.0             futile.options_1.0.1     
-[193] bitops_1.0-9              Rdpack_2.6.1              promises_1.3.0           
-[196] scatterpie_0.2.4          RSQLite_2.3.7             qvalue_2.36.0            
-[199] sandwich_3.1-1            fgsea_1.30.0              DelayedArray_0.30.1      
-[202] proxy_0.4-27              GO.db_3.19.1              compiler_4.4.0           
-[205] prettyunits_1.2.0         boot_1.3-31               beachmat_2.20.0          
-[208] listenv_0.9.1             Rcpp_1.0.13               edgeR_4.2.2              
-[211] workflowr_1.7.1           BiocSingular_1.20.0       tensor_1.5               
-[214] MASS_7.3-61               progress_1.2.3            BiocParallel_1.38.0      
-[217] babelgene_22.9            spatstat.random_3.3-2     R6_2.5.1                 
-[220] fastmap_1.2.0             multcomp_1.4-26           fastmatch_1.1-4          
-[223] rstatix_0.7.2             vipor_0.4.7               TTR_0.24.4               
-[226] ROCR_1.0-11               TFisher_0.2.0             rsvd_1.0.5               
-[229] vcd_1.4-13                nnet_7.3-19               gtable_0.3.5             
-[232] KernSmooth_2.23-24        miniUI_0.1.1.1            deldir_2.0-4             
-[235] htmltools_0.5.8.1         ggthemes_5.1.0            bit64_4.5.2              
-[238] spatstat.explore_3.3-3    lifecycle_1.0.4           blme_1.0-6               
-[241] nloptr_2.1.1              sass_0.4.9                vctrs_0.6.5              
-[244] robustbase_0.99-4-1       spatstat.geom_3.3-3       sn_2.1.1                 
-[247] ggfun_0.1.6               future.apply_1.11.2       bslib_0.8.0              
-[250] pillar_1.9.0              gplots_3.2.0              pcaMethods_1.96.0        
-[253] locfit_1.5-9.10           jsonlite_1.8.9            GetoptLong_1.0.5         </code></pre>
+[169] whisker_0.4.1             mutoss_0.1-13             spatstat.utils_3.1-0     
+[172] hms_1.1.3                 fitdistrplus_1.2-1        munsell_0.5.1            
+[175] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.4              
+[178] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[181] dotCall64_1.2             shinydashboard_0.7.2      ggforce_0.4.2            
+[184] laeken_0.5.3              mgcv_1.9-1                xfun_0.48                
+[187] e1071_1.7-16              TH.data_1.1-2             iterators_1.0.14         
+[190] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[193] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.1             
+[196] promises_1.3.0            scatterpie_0.2.4          RSQLite_2.3.7            
+[199] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[202] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[205] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[208] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.13              
+[211] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[214] tensor_1.5                MASS_7.3-61               progress_1.2.3           
+[217] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-2    
+[220] R6_2.5.1                  fastmap_1.2.0             multcomp_1.4-26          
+[223] fastmatch_1.1-4           rstatix_0.7.2             vipor_0.4.7              
+[226] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[229] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-19              
+[232] gtable_0.3.5              KernSmooth_2.23-24        miniUI_0.1.1.1           
+[235] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[238] bit64_4.5.2               spatstat.explore_3.3-3    lifecycle_1.0.4          
+[241] blme_1.0-6                nloptr_2.1.1              sass_0.4.9               
+[244] vctrs_0.6.5               robustbase_0.99-4-1       spatstat.geom_3.3-3      
+[247] sn_2.1.1                  ggfun_0.1.6               future.apply_1.11.2      
+[250] bslib_0.8.0               pillar_1.9.0              gplots_3.2.0             
+[253] pcaMethods_1.96.0         locfit_1.5-9.10           jsonlite_1.8.9           
+[256] GetoptLong_1.0.5         </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -977,8 +1380,8 @@ loaded via a namespace (and not attached):
   [7] bit_4.5.0                 doParallel_1.0.17         clue_0.3-65              
  [10] lattice_0.22-6            rjson_0.2.23              blob_1.2.4               
  [13] S4Arrays_1.4.1            pbkrtest_0.5.3            parallel_4.4.0           
- [16] png_0.1-8                 plotrix_3.8-4             cli_3.6.3                
- [19] ggplotify_0.1.2           goftest_1.2-3             VIM_6.2.2                
+ [16] png_0.1-8                 plotrix_3.8-4             ggplotify_0.1.2          
+ [19] cli_3.6.3                 goftest_1.2-3             VIM_6.2.2                
  [22] variancePartition_1.34.0  BiocNeighbors_1.22.0      shadowtext_0.1.4         
  [25] uwot_0.2.2                curl_5.2.3                tidytree_0.4.6           
  [28] mime_0.12                 evaluate_1.0.1            leiden_0.4.3.1           
@@ -1028,35 +1431,36 @@ loaded via a namespace (and not attached):
 [160] rmarkdown_2.28            scales_1.3.0              R.methodsS3_1.8.2        
 [163] future_1.34.0             RANN_2.6.2                Cairo_1.6-2              
 [166] spatstat.data_3.1-2       rstudioapi_0.17.1         cluster_2.1.6            
-[169] mutoss_0.1-13             spatstat.utils_3.1-0      hms_1.1.3                
-[172] fitdistrplus_1.2-1        munsell_0.5.1             cowplot_1.1.3            
-[175] colorspace_2.1-1          rlang_1.1.4               DelayedMatrixStats_1.26.0
-[178] sparseMatrixStats_1.16.0  xts_0.14.1                dotCall64_1.2            
-[181] shinydashboard_0.7.2      ggforce_0.4.2             laeken_0.5.3             
-[184] mgcv_1.9-1                xfun_0.48                 e1071_1.7-16             
-[187] TH.data_1.1-2             iterators_1.0.14          abind_1.4-8              
-[190] GOSemSim_2.30.2           treeio_1.28.0             futile.options_1.0.1     
-[193] bitops_1.0-9              Rdpack_2.6.1              promises_1.3.0           
-[196] scatterpie_0.2.4          RSQLite_2.3.7             qvalue_2.36.0            
-[199] sandwich_3.1-1            fgsea_1.30.0              DelayedArray_0.30.1      
-[202] proxy_0.4-27              GO.db_3.19.1              compiler_4.4.0           
-[205] prettyunits_1.2.0         boot_1.3-31               beachmat_2.20.0          
-[208] listenv_0.9.1             Rcpp_1.0.13               edgeR_4.2.2              
-[211] workflowr_1.7.1           BiocSingular_1.20.0       tensor_1.5               
-[214] MASS_7.3-61               progress_1.2.3            BiocParallel_1.38.0      
-[217] babelgene_22.9            spatstat.random_3.3-2     R6_2.5.1                 
-[220] fastmap_1.2.0             multcomp_1.4-26           fastmatch_1.1-4          
-[223] rstatix_0.7.2             vipor_0.4.7               TTR_0.24.4               
-[226] ROCR_1.0-11               TFisher_0.2.0             rsvd_1.0.5               
-[229] vcd_1.4-13                nnet_7.3-19               gtable_0.3.5             
-[232] KernSmooth_2.23-24        miniUI_0.1.1.1            deldir_2.0-4             
-[235] htmltools_0.5.8.1         ggthemes_5.1.0            bit64_4.5.2              
-[238] spatstat.explore_3.3-3    lifecycle_1.0.4           blme_1.0-6               
-[241] nloptr_2.1.1              sass_0.4.9                vctrs_0.6.5              
-[244] robustbase_0.99-4-1       spatstat.geom_3.3-3       sn_2.1.1                 
-[247] ggfun_0.1.6               future.apply_1.11.2       bslib_0.8.0              
-[250] pillar_1.9.0              gplots_3.2.0              pcaMethods_1.96.0        
-[253] locfit_1.5-9.10           jsonlite_1.8.9            GetoptLong_1.0.5         </code></pre>
+[169] whisker_0.4.1             mutoss_0.1-13             spatstat.utils_3.1-0     
+[172] hms_1.1.3                 fitdistrplus_1.2-1        munsell_0.5.1            
+[175] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.4              
+[178] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[181] dotCall64_1.2             shinydashboard_0.7.2      ggforce_0.4.2            
+[184] laeken_0.5.3              mgcv_1.9-1                xfun_0.48                
+[187] e1071_1.7-16              TH.data_1.1-2             iterators_1.0.14         
+[190] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[193] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.1             
+[196] promises_1.3.0            scatterpie_0.2.4          RSQLite_2.3.7            
+[199] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[202] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[205] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[208] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.13              
+[211] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[214] tensor_1.5                MASS_7.3-61               progress_1.2.3           
+[217] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-2    
+[220] R6_2.5.1                  fastmap_1.2.0             multcomp_1.4-26          
+[223] fastmatch_1.1-4           rstatix_0.7.2             vipor_0.4.7              
+[226] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[229] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-19              
+[232] gtable_0.3.5              KernSmooth_2.23-24        miniUI_0.1.1.1           
+[235] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[238] bit64_4.5.2               spatstat.explore_3.3-3    lifecycle_1.0.4          
+[241] blme_1.0-6                nloptr_2.1.1              sass_0.4.9               
+[244] vctrs_0.6.5               robustbase_0.99-4-1       spatstat.geom_3.3-3      
+[247] sn_2.1.1                  ggfun_0.1.6               future.apply_1.11.2      
+[250] bslib_0.8.0               pillar_1.9.0              gplots_3.2.0             
+[253] pcaMethods_1.96.0         locfit_1.5-9.10           jsonlite_1.8.9           
+[256] GetoptLong_1.0.5         </code></pre>
 </div>
 </div>
 </div>

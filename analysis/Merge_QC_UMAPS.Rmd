@@ -204,6 +204,7 @@ list(ptotaldataset, pdetecteddataset)
 ```{r umap all}
 Idents(seuratM) <- seuratM$cond
 DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colcond) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.05, cols = colcond) + theme(legend.position = "none")
 
 Idents(seuratM) <- seuratM$RNA_snn_res.0.25
 DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal) 
@@ -211,6 +212,14 @@ DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal)
 Idents(seuratM) <- seuratM$clusterName
 DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)
 DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)  + theme(legend.position = "none")
+```
+## plot umaps A4
+```{r umap A4, fig.width=29.7, fig.height=21}
+Idents(seuratM) <- seuratM$cond
+DimPlot(seuratM, reduction = "umap", pt.size = 1.5, cols = colcond) + theme(legend.position = "none")
+
+Idents(seuratM) <- seuratM$clusterName
+DimPlot(seuratM, reduction = "umap", pt.size = 1.5, cols = colclusterName)  + theme(legend.position = "none")
 ```
 
 ## plot umaps split
