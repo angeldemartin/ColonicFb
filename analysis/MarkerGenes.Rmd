@@ -56,11 +56,11 @@ seuratM <- readRDS(fileNam)
 ```{r color vectors}
 
 ## set vector for cond
-colcond <- c("#628395","#BF782D", "#B45B5C")
+colcond <- c("#202547","#99B898", "#BE3144")
 names(colcond) <- c("untreated", "crod", "DSS")
 
 ## set vector for dataset
-coldataset <- c("#628395","#BF782D","#B45B5C")
+coldataset <- c("#202547","#99B898", "#BE3144")
 names(coldataset) <- c("372561_14-14_20241203_Mu_colonicFb_untreated", "372561_15-15_20241203_Mu_colonicFb_cond1", "372561_16-16_20241209_Mu_colonicFb_cond2")
 
 colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
@@ -68,6 +68,11 @@ names(colpal) <- c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "1
 
 colclusterName <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
 names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+
+
+#c("#67001f", "#D53E4F", "#f4a582", "#FEE08B", "#003c30","#01665e","#66C2A5", "#3288BD","#BEAED4", "#c7eae5","#355C7D","#202547","#B45B5C","#8c510a")
+#c("#dfc27d","#BE3144","#202547","#355C7D","#779d8d")
+#c("#202547","#BE3144")
 ```
 
 ## calculate cluster marker genes
@@ -247,6 +252,21 @@ genes <- data.frame(gene=rownames(seuratM)) %>%
 selGenes <- data.frame(geneID=c("Mki67","Epcam","Ptprc","Ano1","Plp1","Acta2","Bmp5","Adamdec1","Pdgfra","Pi16","Cd81","Cd34","Pdpn")) %>% left_join(., genes, by="geneID")
 
 DotPlot(seuratM, features = selGenes, group.by= "clusterName") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+```
+
+## dotplot marker cluster fb only
+```{r dotplot marker cluster fb only, fig.height=4, fig.width=9}
+###subset fb 
+seuratFb <- subset(seuratM, clusterName %in% c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2"))
+
+genes <- data.frame(gene=rownames(seuratFb)) %>% 
+  mutate(geneID=gsub("^.*\\.", "", gene))
+
+selGenes <- data.frame(geneID=c("Ano1","Plp1","Acta2","Bmp5","Adamdec1","Pdgfra","Pi16","Cd81","Cd34","Pdpn")) %>% left_join(., genes, by="geneID")
+DotPlot(seuratFb, features = selGenes, group.by= "clusterName") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+
+selGenes <- data.frame(geneID=c("Wnt2b","Ccn2","Bmp4","Bmp6","Sfrp2","Col15a1","Grem1","Igfbp3")) %>% left_join(., genes, by="geneID")
+DotPlot(seuratFb, features = selGenes, group.by= "clusterName") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
 
 ## dotplot marker cluster+cond
@@ -464,6 +484,149 @@ colnames(df) <- c ("geneID")
 selGenes <- data.frame(geneID=df$geneID) %>% left_join(., genes, by="geneID")
 DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
+
+## subset Adamdec+ (PdgfraloFb2 and Telocytes/Fibro2)
+```{r subset Adamdec+}
+seuratA <- subset(seuratM, clusterName %in% c("PdgfraloFb2", "Telocytes/Fibro2"))
+table(seuratA$clusterName)
+```
+
+
+## calculate DE genes cond
+```{r DE genes DSS in Adamdec1, include=TRUE, eval=FALSE}
+##DE genes DSS in Adamdec1+
+Idents(seuratA) <- seuratA$cond
+levels(seuratA)
+DEGenesAdamdec <- FindAllMarkers(seuratA, only.pos=T)  %>% 
+  dplyr::filter(p_val_adj < 0.01)
+
+#save table
+write.table(DEGenesAdamdec, 
+            file= "/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond",
+            sep="\t",
+            quote=F,
+            row.names=F,
+            col.names=T)
+```
+
+## GSEA DSS Adamdec1
+```{r GSEA DSS Adamdec1, fig.width=10, fig.height=10}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^.*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DEDSSAdamdec1 <- DEGenesAdamdec %>% dplyr::filter(cluster == "DSS")
+##GSEA DSS
+egoDSSAdamdec1<- enrichGO(gene = unique(DEDSSAdamdec1$EnsID),
+                          OrgDb = org.Mm.eg.db,
+                          keyType = 'ENSEMBL',
+                          ont = "BP",
+                          pAdjustMethod = "BH",
+                          pvalueCutoff = 0.05,
+                          qvalueCutoff = 0.05)
+egoDSSAdamdec1 <- setReadable(egoDSSAdamdec1, OrgDb = org.Mm.eg.db)
+dotplot(egoDSSAdamdec1, showCategory=30)
+```
+
+## barplots GSEA Adamdec1
+```{r barplots GSEA Adamdec1, fig.height=5, fig.width=12}
+#select pahtways immune response and filter file
+selpathw <- c("positive regulation of innate immune response", "toll-like receptor 4 signaling pathway", "regulation of NLRP3 inflammasome complex assembly", "RIG-I signaling pathway", "regulation of cytokine-mediated signaling pathway")
+
+egoDSSAdamdec1_fil <- egoDSSAdamdec1%>% filter(egoDSSAdamdec1@result$Description %in% selpathw)
+
+egoDSSAdamdec1_fil_2 <- pairwise_termsim(egoDSSAdamdec1_fil)
+#make ggbarplot
+p <- ggbarplot(egoDSSAdamdec1_fil_2@result, x = "Description", y = "Count", fill = "#B45B5C", color= "#B45B5C", sort.val = "asc", orientation = "horizontal")
+p
+
+#select pahtways epigenetic and filter file
+selpathw <- c("negative regulation of gene expression, epigenetic", "epigenetic regulation of gene expression", "positive regulation of gene expression, epigenetic")
+
+egoDSSAdamdec1_fil <- egoDSSAdamdec1%>% filter(egoDSSAdamdec1@result$Description %in% selpathw)
+
+egoDSSAdamdec1_fil_2 <- pairwise_termsim(egoDSSAdamdec1_fil)
+#make ggbarplot
+p <- ggbarplot(egoDSSAdamdec1_fil_2@result, x = "Description", y = "Count", fill = "#B45B5C", color= "#B45B5C", sort.val = "asc", orientation = "horizontal")
+p
+```
+
+## violin plots Adamdec1+
+```{r violin plots Adamdec1+}
+##positive regulation of gene expression, epigenetic
+Idents(seuratA) <- seuratA$cond
+VlnPlot(object = seuratA, features = "ENSMUSG00000086503.Xist", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000036940.Kdm1a", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000054203.Ifi205", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000024513.Mbd2", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000037487.Ubr5", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000030180.Kdm5a", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000026219.Trip12", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000078247.Airn", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000035851.Ythdc1", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000026313.Hdac4", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+##positive regulation of gene expression, epigenetic
+VlnPlot(object = seuratA, features = "ENSMUSG00000002028.Kmt2a", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000054611.Kdm2a", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000022536.Glyr1", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000031660.Brd7", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000055024.Ep300", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000055024.Ep300", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000025019.Lcor", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000038025.Phf2", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000085715.Tsix", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000032187.Smarca4", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+```
+
+## GSEA crod Adamdec1
+```{r GSEA crod Adamdec1, fig.width=10, fig.height=10}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^.*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DEcrodAdamdec1 <- DEGenesAdamdec %>% dplyr::filter(cluster == "crod")
+##GSEA DSS
+egocrodAdamdec1<- enrichGO(gene = unique(DEcrodAdamdec1$EnsID),
+                          OrgDb = org.Mm.eg.db,
+                          keyType = 'ENSEMBL',
+                          ont = "BP",
+                          pAdjustMethod = "BH",
+                          pvalueCutoff = 0.05,
+                          qvalueCutoff = 0.05)
+egocrodAdamdec1 <- setReadable(egocrodAdamdec1, OrgDb = org.Mm.eg.db)
+dotplot(egocrodAdamdec1, showCategory=30)
+```
+
+## GSEA untreated Adamdec1
+```{r GSEA untreated Adamdec1, fig.width=10, fig.height=10}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^.*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DEuntreatedAdamdec1 <- DEGenesAdamdec %>% dplyr::filter(cluster == "untreated")
+##GSEA DSS
+egountreatedAdamdec1<- enrichGO(gene = unique(DEuntreatedAdamdec1$EnsID),
+                          OrgDb = org.Mm.eg.db,
+                          keyType = 'ENSEMBL',
+                          ont = "BP",
+                          pAdjustMethod = "BH",
+                          pvalueCutoff = 0.05,
+                          qvalueCutoff = 0.05)
+egountreatedAdamdec1 <- setReadable(egountreatedAdamdec1, OrgDb = org.Mm.eg.db)
+dotplot(egountreatedAdamdec1, showCategory=30)
+```
+
+
+
 
 ## session info
 ```{r date and session info}

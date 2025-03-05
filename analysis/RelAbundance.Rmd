@@ -55,11 +55,11 @@ seuratM <- readRDS(fileNam)
 ## set color vectors 
 ```{r color vectors}
 ## set vector for cond
-colcond <- c("#628395","#BF782D", "#B45B5C")
+colcond <- c("#202547","#99B898", "#BE3144")
 names(colcond) <- c("untreated", "crod", "DSS")
 
 ## set vector for dataset
-coldataset <- c("#628395","#BF782D","#B45B5C")
+coldataset <- c("#202547","#99B898", "#BE3144")
 names(coldataset) <- c("372561_14-14_20241203_Mu_colonicFb_untreated", "372561_15-15_20241203_Mu_colonicFb_cond1", "372561_16-16_20241209_Mu_colonicFb_cond2")
 
 colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
@@ -75,6 +75,27 @@ names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocyt
 datList <- NULL
 for(con in unique(seuratM$cond)){
   seuratSub <- subset(seuratM, cond==con)
+  print(dim(seuratSub))
+  dat_con <- as.data.frame(table(seuratSub$clusterName)) %>%
+  mutate(percent=Freq/ncol(seuratSub)) %>% mutate(cond=con)
+  datList[[con]] <- dat_con
+}
+dat_all <- do.call("rbind", datList)
+
+ordcond <- c("untreated", "crod", "DSS")
+
+## plot abundance
+ggbarplot(dat_all, x= "cond", y= "percent", fill = "Var1", palette = colclusterName, legend = "right", legend.titel = "cluster", ylab = "frequency")  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_x_discrete(limits=ordcond)
+```
+## rel cluster abundance fb
+```{r abundance fb cond, fig.height=8, fig.width=10}
+###subset fb 
+seuratFb <- subset(seuratM, clusterName %in% c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2"))
+
+###dataset
+datList <- NULL
+for(con in unique(seuratFb$cond)){
+  seuratSub <- subset(seuratFb, cond==con)
   print(dim(seuratSub))
   dat_con <- as.data.frame(table(seuratSub$clusterName)) %>%
   mutate(percent=Freq/ncol(seuratSub)) %>% mutate(cond=con)

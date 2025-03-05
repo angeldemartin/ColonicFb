@@ -154,11 +154,11 @@ table(seuratM$cond)
 ```{r color vectors}
 
 ## set vector for cond
-colcond <- c("#628395","#BF782D", "#B45B5C")
+colcond <- c("#202547","#99B898", "#BE3144")
 names(colcond) <- c("untreated", "crod", "DSS")
 
 ## set vector for dataset
-coldataset <- c("#628395","#BF782D","#B45B5C")
+coldataset <- c("#202547","#99B898", "#BE3144")
 names(coldataset) <- c("372561_14-14_20241203_Mu_colonicFb_untreated", "372561_15-15_20241203_Mu_colonicFb_cond1", "372561_16-16_20241209_Mu_colonicFb_cond2")
 
 colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
@@ -202,24 +202,53 @@ list(ptotaldataset, pdetecteddataset)
 
 ## plot umaps all
 ```{r umap all}
+##cond
 Idents(seuratM) <- seuratM$cond
-DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colcond) 
-DimPlot(seuratM, reduction = "umap", pt.size = 0.05, cols = colcond) + theme(legend.position = "none")
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colcond) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colcond) + theme(legend.position = "none")
 
+colcond <- c("#202547","lightgrey", "lightgrey")
+names(colcond) <- c("untreated", "crod", "DSS")
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colcond, order ="untreated") + theme(legend.position = "none")
+
+colcond <- c("lightgrey","#99B898", "lightgrey")
+names(colcond) <- c("untreated", "crod", "DSS")
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colcond, order ="crod") + theme(legend.position = "none")
+
+colcond <- c("lightgrey","lightgrey", "#BE3144")
+names(colcond) <- c("untreated", "crod", "DSS")
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colcond, order ="DSS") + theme(legend.position = "none")
+
+colcond <- c("#202547","#99B898", "#BE3144")
+names(colcond) <- c("untreated", "crod", "DSS")
+
+##RNA_snn_res.0.25.
 Idents(seuratM) <- seuratM$RNA_snn_res.0.25
-DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colpal) 
 
+##clusterName
 Idents(seuratM) <- seuratM$clusterName
-DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)
-DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName)  + theme(legend.position = "none")
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colclusterName)
+DimPlot(seuratM, reduction = "umap", pt.size = 0.2, cols = colclusterName)  + theme(legend.position = "none")
 ```
 ## plot umaps A4
 ```{r umap A4, fig.width=29.7, fig.height=21}
 Idents(seuratM) <- seuratM$cond
-DimPlot(seuratM, reduction = "umap", pt.size = 1.5, cols = colcond) + theme(legend.position = "none")
+DimPlot(seuratM, reduction = "umap", pt.size = 2, cols = colcond, shuffle = TRUE) + theme(legend.position = "none")
 
 Idents(seuratM) <- seuratM$clusterName
-DimPlot(seuratM, reduction = "umap", pt.size = 1.5, cols = colclusterName)  + theme(legend.position = "none")
+DimPlot(seuratM, reduction = "umap", pt.size = 2, cols = colclusterName)  + theme(legend.position = "none")
+```
+
+## plot umaps A4 fb only
+```{r umap A4 fb only, fig.width=29.7, fig.height=21}
+seuratFb <- subset(seuratM, clusterName %in% c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2"))
+
+Idents(seuratFb) <- seuratFb$cond
+DimPlot(seuratFb, reduction = "umap", pt.size = 2, cols = colcond, shuffle = TRUE) + theme(legend.position = "none")
+
+Idents(seuratFb) <- seuratFb$clusterName
+DimPlot(seuratFb, reduction = "umap", pt.size = 2, cols = colclusterName)  + theme(legend.position = "none")
 ```
 
 ## plot umaps split
@@ -233,6 +262,8 @@ DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colpal, split.by = "c
 Idents(seuratM) <- seuratM$clusterName
 DimPlot(seuratM, reduction = "umap", pt.size = 0.1, cols = colclusterName, split.by = "cond") 
 ```
+
+
 
 ## session info
 ```{r date and session info}
