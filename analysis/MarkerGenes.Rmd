@@ -900,6 +900,23 @@ VlnPlot(object = seuratA, features = "ENSMUSG00000032187.Smarca4", pt.size= 1, c
 
 ##positive regulation of innate immune response
 VlnPlot(object = seuratA, features = "ENSMUSG00000035356.Nfkbiz", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000024927.Rela", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000020400.Tnip1", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+
+VlnPlot(object = seuratA, features = "ENSMUSG00000061232.H2-K1", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000073409.H2-Q6", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000060550.H2-Q7", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+
+VlnPlot(object = seuratA, features = "ENSMUSG00000024349.Sting1", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000024737.Slc15a3", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000021270.Hsp90aa1", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000029826.Zc3hav1", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000033545.Znrf1", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000019850.Tnfaip3", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000021277.Traf3", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000037318.Traf3ip3", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000031639.Tlr3", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000074151.Nlrc5", pt.size= 1, cols= colcond) + theme(legend.position = "none")
 
 ##chemokines 
 VlnPlot(object = seuratA, features = "ENSMUSG00000021508.Cxcl14", pt.size= 0, cols= colcond) + theme(legend.position = "none")
@@ -914,6 +931,16 @@ VlnPlot(object = seuratA, features = "ENSMUSG00000009185.Ccl8", pt.size= 0, cols
 VlnPlot(object = seuratA, features = "ENSMUSG00000035373.Ccl7", pt.size= 0, cols= colcond) + theme(legend.position = "none")
 VlnPlot(object = seuratA, features = "ENSMUSG00000071005.Ccl19", pt.size= 1, cols= colcond) + theme(legend.position = "none")
 ```
+## feature plots DE genes DSS
+```{r feature plots DE DSS}
+## plot feature
+FeaturePlot(seuratFb, features = "ENSMUSG00000019850.Tnfaip3", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000024349.Sting1", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+
+```
+
+
+
 ## extract genes GSEA pigenetic regulation of gene expression
 ```{r extract genes pigenetic regulation of gene expression}
 ##epigenetic regulation of gene expression
