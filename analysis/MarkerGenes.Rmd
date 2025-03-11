@@ -67,7 +67,7 @@ colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D
 names(colpal) <- c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "10", "13")
 
 colclusterName <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
-names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
 
 
 #c("#67001f", "#D53E4F", "#f4a582", "#FEE08B", "#003c30","#01665e","#66C2A5", "#3288BD","#BEAED4", "#c7eae5","#355C7D","#202547","#B45B5C","#8c510a")
@@ -222,7 +222,7 @@ avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
   logNormExpresMa <- logNormExpresMa[selGenes,]
   if(is.null(ordVec)){
     ordVec <- levels(seurat)
-    ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+    ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
      
   }
   logNormExpresMa <- logNormExpresMa[,ordVec]
@@ -298,6 +298,23 @@ FeaturePlot(seuratM, features = "ENSMUSG00000016494.Cd34", cols = c("lightgrey",
 FeaturePlot(seuratM, features = "ENSMUSG00000022057.Adamdec1", cols = c("lightgrey", "#BE3144"), pt.size = 1)
 ```
 
+## feature plots fb maker genes fb only
+```{r feature plots fb only}
+## plot feature
+FeaturePlot(seuratFb, features = "ENSMUSG00000020717.Pecam1", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000045394.Epcam", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000026395.Ptprc", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000039542.Ncam1", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000031004.Mki67", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+
+FeaturePlot(seuratFb, features = "ENSMUSG00000028583.Pdpn", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000029231.Pdgfra", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000035783.Acta2", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000037706.Cd81", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000016494.Cd34", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+FeaturePlot(seuratFb, features = "ENSMUSG00000022057.Adamdec1", cols = c("lightgrey", "#BE3144"), pt.size = 1)
+```
+
 ## calculate DE genes cond
 ```{r cond DE genes, include=TRUE, eval=FALSE}
 ##cluster marker
@@ -314,16 +331,19 @@ write.table(markerGenes,
             col.names=T)
 ```
 
-## GSEA untreated
-```{r GSEA untreated, fig.width=10, fig.height=10}
-## load DEGenesFbcond3
+## load DE genes cond
+```{r load DE genes, fig.width=10, fig.height=10}
+## load DEGenes cond3
 DEGenes <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenes_cond", header = TRUE, sep = "\t")
 
 ##adjust table
 DEGenes <- DEGenes %>%
   mutate(Gene=gsub("^.*\\.", "", gene))  %>%
   mutate(EnsID=gsub("\\..*","", gene))
+```
 
+## GSEA untreated
+```{r GSEA untreated, fig.width=10, fig.height=10}
 DEuntreated <- DEGenes %>% dplyr::filter(cluster == "untreated")
 ##GSEA untreated
 egountreated<- enrichGO(gene = unique(DEuntreated$EnsID),
@@ -455,23 +475,23 @@ ggboxplot(DEGenesAll, x = "celltype", y = "avg_log2FC", color = "celltype", pale
 ```
 
 
-## dotplot RIG-I signaling pathway genes
-```{r dotplot RIG-I, fig.height=4, fig.width=12}
-Idents(seuratM) <- seuratM$clusterName_cond
+## dotplot RIG-I signaling pathway genes fb
+```{r dotplot RIG-I fb, fig.height=4, fig.width=12}
+Idents(seuratFb) <- seuratFb$clusterName_cond
 
-genes <- data.frame(gene=rownames(seuratM)) %>% 
+genes <- data.frame(gene=rownames(seuratFb)) %>% 
   mutate(geneID=gsub("^.*\\.", "", gene))
 
 selGenes <- data.frame(geneID=c("Ankrd17","Zc3hav1","Ddx60","Rigi","Pum2","Pum1","Nploc4","Usp15","Lsm14a","Nlrx1","Oasl1")) %>% left_join(., genes, by="geneID")
 
-DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+DotPlot(seuratFb, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
 
 ## dotplot activation of innate immune response
 ```{r dotplot innate immune response, fig.height=22, fig.width=12}
-Idents(seuratM) <- seuratM$clusterName_cond
+Idents(seuratFb) <- seuratM$clusterName_cond
 
-genes <- data.frame(gene=rownames(seuratM)) %>% 
+genes <- data.frame(gene=rownames(seuratFb)) %>% 
   mutate(geneID=gsub("^.*\\.", "", gene))
 
 egoDSS <- dplyr::filter(egoDSS@result, egoDSS@result$Description =="activation of innate immune response")
@@ -482,7 +502,7 @@ df <- as.data.frame(strSub)
 colnames(df) <- c ("geneID")
 
 selGenes <- data.frame(geneID=df$geneID) %>% left_join(., genes, by="geneID")
-DotPlot(seuratM, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
+DotPlot(seuratFb, features = selGenes, group.by= "clusterName_cond") + RotatedAxis() + scale_color_viridis(option="F") + coord_flip()
 ```
 
 ## subset Adamdec+ (PdgfraloFb2 and Telocytes/Fibro2)
@@ -492,7 +512,7 @@ table(seuratA$clusterName)
 ```
 
 
-## calculate DE genes cond
+## calculate DE genes cond Adamdec1
 ```{r DE genes DSS in Adamdec1, include=TRUE, eval=FALSE}
 ##DE genes DSS in Adamdec1+
 Idents(seuratA) <- seuratA$cond
@@ -508,6 +528,304 @@ write.table(DEGenesAdamdec,
             row.names=F,
             col.names=T)
 ```
+
+## extract genes for heatmap DE DSS
+```{r extract genes top DE DSS genes}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+##adjust table
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^[^\\.]*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DE_DSS <- dplyr::filter(DEGenesAdamdec, cluster == "DSS") %>%     # Filter rows where cluster is "DSS"
+  slice_min(order_by = p_val_adj, n = 100)  #%>% # Select the 10 rows with the smallest p_val_adj
+  #slice_max(order_by = avg_log2FC, n = 25) # Select the 10 rows with the smallest p_val_adj
+
+# List of data frames
+mGenes <- as.vector(DE_DSS$Gene)
+mGenes <- mGenes[mGenes != "CT010467.1"]
+```
+
+## average heatmap top100 DE genes DSS
+```{r avg heatmap top100 DE DSS, fig.width=10, fig.height=18}
+Idents(seuratFb) <- seuratFb$clusterName_cond
+seurat <- seuratFb
+levels(seurat)
+
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(colnames(logNormExpresMa))
+  colnames(annotation_col)[1] <- "celltype"
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub("(^.*?_)","",celltype))
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(celltype = gsub("(_.*$)","",celltype))
+ rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colcond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+   # ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+     
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+
+genesPlot <- data.frame(gene=mGenes)
+
+levels(seurat)
+colVec <- colclusterName
+# colVec <- c(colPal, colPal, colPal)
+avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
+```
+
+## extract genes for heatmap DE untreated
+```{r extract genes top DE untreated genes}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+##adjust table
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^[^\\.]*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DE_untreated <- dplyr::filter(DEGenesAdamdec, cluster == "untreated") %>% 
+  slice_min(order_by = p_val_adj, n = 100)  #%>% # Select the 10 rows with the smallest p_val_adj
+  #slice_max(order_by = avg_log2FC, n = 25) # Select the 10 rows with the smallest p_val_adj
+
+# List of data frames
+mGenes <- as.vector(DE_untreated$Gene)
+```
+
+## average heatmap top100 DE genes untereated
+```{r avg heatmap top100 DE untreated, fig.width=10, fig.height=18}
+Idents(seuratFb) <- seuratFb$clusterName_cond
+seurat <- seuratFb
+levels(seurat)
+
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(colnames(logNormExpresMa))
+  colnames(annotation_col)[1] <- "celltype"
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub("(^.*?_)","",celltype))
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(celltype = gsub("(_.*$)","",celltype))
+ rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colcond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+   # ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+     
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+
+genesPlot <- data.frame(gene=mGenes)
+
+levels(seurat)
+colVec <- colclusterName
+# colVec <- c(colPal, colPal, colPal)
+avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
+```
+
+## extract genes for heatmap DE crod
+```{r extract genes top DE crod genes}
+## load DEGenesAdamdec1
+DEGenesAdamdec <- read.delim("/Users/immbio/Desktop/Project/Angelina/ColonicFb/analysis/DEGenesAdamdec1_cond", header = TRUE, sep = "\t")
+
+##adjust table
+DEGenesAdamdec <- DEGenesAdamdec %>%
+  mutate(Gene=gsub("^[^\\.]*\\.", "", gene))  %>%
+  mutate(EnsID=gsub("\\..*","", gene))
+
+DE_crod <- dplyr::filter(DEGenesAdamdec, cluster == "crod") %>% 
+  slice_min(order_by = p_val_adj, n = 100)  #%>% # Select the 10 rows with the smallest p_val_adj
+  #slice_max(order_by = avg_log2FC, n = 25) # Select the 10 rows with the smallest p_val_adj
+
+# List of data frames
+mGenes <- as.vector(DE_untreated$Gene)
+```
+
+## average heatmap top100 DE genes crod
+```{r avg heatmap top100 DE crod, fig.width=10, fig.height=18}
+Idents(seuratFb) <- seuratFb$clusterName_cond
+seurat <- seuratFb
+levels(seurat)
+
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(colnames(logNormExpresMa))
+  colnames(annotation_col)[1] <- "celltype"
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub("(^.*?_)","",celltype))
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(celltype = gsub("(_.*$)","",celltype))
+ rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colcond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+   # ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+     
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+
+genesPlot <- data.frame(gene=mGenes)
+
+levels(seurat)
+colVec <- colclusterName
+# colVec <- c(colPal, colPal, colPal)
+avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
+```
+
+
+
 
 ## GSEA DSS Adamdec1
 ```{r GSEA DSS Adamdec1, fig.width=10, fig.height=10}
@@ -579,7 +897,202 @@ VlnPlot(object = seuratA, features = "ENSMUSG00000025019.Lcor", pt.size= 0, cols
 VlnPlot(object = seuratA, features = "ENSMUSG00000038025.Phf2", pt.size= 0, cols= colcond) + theme(legend.position = "none")
 VlnPlot(object = seuratA, features = "ENSMUSG00000085715.Tsix", pt.size= 1, cols= colcond) + theme(legend.position = "none")
 VlnPlot(object = seuratA, features = "ENSMUSG00000032187.Smarca4", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+
+##positive regulation of innate immune response
+VlnPlot(object = seuratA, features = "ENSMUSG00000035356.Nfkbiz", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+
+##chemokines 
+VlnPlot(object = seuratA, features = "ENSMUSG00000021508.Cxcl14", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000029371.Cxcl5", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000023078.Cxcl13", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000058427.Cxcl2", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000018920.Cxcl16", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000029417.Cxcl9", pt.size= 1, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000020676.Ccl11", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000035385.Ccl2", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000009185.Ccl8", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000035373.Ccl7", pt.size= 0, cols= colcond) + theme(legend.position = "none")
+VlnPlot(object = seuratA, features = "ENSMUSG00000071005.Ccl19", pt.size= 1, cols= colcond) + theme(legend.position = "none")
 ```
+## extract genes GSEA pigenetic regulation of gene expression
+```{r extract genes pigenetic regulation of gene expression}
+##epigenetic regulation of gene expression
+ego1 <- dplyr::filter(egoDSSAdamdec1@result,egoDSSAdamdec1@result$Description=="epigenetic regulation of gene expression")
+g1 <- ego1$geneID
+g1_vector <- unlist(strsplit(g1, "/"))
+g1_vector <- g1_vector[g1_vector != "a"]
+g1_vector <- g1_vector[g1_vector != "Arb2a"]
+```
+
+## average heatmap genes pigenetic regulation of gene expression
+```{r avg heatmap genespigenetic regulation of gene expression , fig.width=10, fig.height=17}
+Idents(seuratFb) <- seuratFb$clusterName_cond
+seurat <- seuratFb
+levels(seurat)
+
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(colnames(logNormExpresMa))
+  colnames(annotation_col)[1] <- "celltype"
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub("(^.*?_)","",celltype))
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(celltype = gsub("(_.*$)","",celltype))
+ rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colcond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+   # ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+     
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+
+genesPlot <- data.frame(gene=g1_vector)
+
+levels(seurat)
+colVec <- colclusterName
+# colVec <- c(colPal, colPal, colPal)
+avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
+```
+
+## extract genes GSEA positive regulation of innate immune response
+```{r extract genes positive regulation of innate immune response}
+##epigenetic regulation of gene expression
+ego1 <- dplyr::filter(egoDSSAdamdec1@result,egoDSSAdamdec1@result$Description=="positive regulation of innate immune response")
+g1 <- ego1$geneID
+g1_vector <- unlist(strsplit(g1, "/"))
+g1_vector <- g1_vector[g1_vector != "Rigi"]
+```
+
+## average heatmap genes positive regulation of innate immune response
+```{r avg heatmap genes positive regulation of innate immune response, fig.width=10, fig.height=25}
+Idents(seuratFb) <- seuratFb$clusterName_cond
+seurat <- seuratFb
+levels(seurat)
+
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(colnames(logNormExpresMa))
+  colnames(annotation_col)[1] <- "celltype"
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub("(^.*?_)","",celltype))
+    annotation_col <- annotation_col %>%
+    dplyr::mutate(celltype = gsub("(_.*$)","",celltype))
+ rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colcond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+   # ordVec <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+     
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+
+genesPlot <- data.frame(gene=g1_vector)
+
+levels(seurat)
+colVec <- colclusterName
+# colVec <- c(colPal, colPal, colPal)
+avgHeatmap(seurat, selGenes = genesPlot, colVecIdent = colVec)
+```
+
 
 ## GSEA crod Adamdec1
 ```{r GSEA crod Adamdec1, fig.width=10, fig.height=10}
@@ -624,9 +1137,6 @@ egountreatedAdamdec1<- enrichGO(gene = unique(DEuntreatedAdamdec1$EnsID),
 egountreatedAdamdec1 <- setReadable(egountreatedAdamdec1, OrgDb = org.Mm.eg.db)
 dotplot(egountreatedAdamdec1, showCategory=30)
 ```
-
-
-
 
 ## session info
 ```{r date and session info}

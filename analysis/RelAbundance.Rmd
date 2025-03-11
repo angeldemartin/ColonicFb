@@ -54,6 +54,7 @@ seuratM <- readRDS(fileNam)
 
 ## set color vectors 
 ```{r color vectors}
+
 ## set vector for cond
 colcond <- c("#202547","#99B898", "#BE3144")
 names(colcond) <- c("untreated", "crod", "DSS")
@@ -66,7 +67,12 @@ colpal <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D
 names(colpal) <- c("0","3","2", "6", "1", "5", "4", "7","8", "11", "9", "12", "10", "13")
 
 colclusterName <- c("#355C7D","#628395","#99B898","#66C2A5","#E84A5F","#B45B5C","#BF782D","#6C5B7B", "#C06C84", "#c7eae5","#904D39", "#67001f","#0F1F38","#8E9B97")
-names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","EpC","Cycling")
+names(colclusterName) <- c("PdgfraloFb1","PdgfraloFb2","Trophocytes1","Trophocytes2","Telocytes/Fibro2","PdgfrahiFb","Myocytes","Glial","ICC1", "ICC2","Immun1","Immun2","IEC","Cycling")
+
+
+#c("#67001f", "#D53E4F", "#f4a582", "#FEE08B", "#003c30","#01665e","#66C2A5", "#3288BD","#BEAED4", "#c7eae5","#355C7D","#202547","#B45B5C","#8c510a")
+#c("#dfc27d","#BE3144","#202547","#355C7D","#779d8d")
+#c("#202547","#BE3144")
 ```
 
 ## rel cluster abundance
